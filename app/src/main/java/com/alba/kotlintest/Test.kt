@@ -72,6 +72,7 @@ package com.alba.kotlintest
 
 //}
 
+/*
 class Person {
 
     var lastName: String = "Lu"
@@ -82,7 +83,7 @@ class Person {
         get() = field               //后端变量
 
         //Type mismatch: inferred type is () -> Unit but Unit was expected
-        set(value) = {
+        set(value) {
             if (value<10){
                 field = value       //如果传入的值小于10返回该值
             }else{
@@ -94,12 +95,11 @@ class Person {
         private set
 
 }
-
-//测试
-fun main(args: Array<String>){
+*/
+/*fun main(args: Array<String>){
     var  person: Person = Person()
 
-    person.lastName = "yang"
+    person.lastName = "Yang"
 
     println("lastname:${person.lastName}")
 
@@ -108,5 +108,34 @@ fun main(args: Array<String>){
 
     person.no = 20
     println("no:${person.no}")
+}*/
+
+class Kof constructor(name: String){//类名为Kof,构造器没有注解，没有可见度修饰符，constructor关键字可省略
+    var url: String = "http://www.kof.com"
+    var country: String = "CN"
+    var siteName = name
+
+    init {//初始化代码段，以init关键字作为前缀
+        println("初始化网站名: ${name}")
+    }
+
+    //次构造函数, 需要加前缀constructor   this代表通过另一个次构造函数代理主构造函数
+    constructor(name: String,alexa: Int) : this(name){
+        println("Alexa排名 $alexa")
+    }
+
+    fun printTest(){
+        println("我是类的函数")
+    }
+}
+
+fun main(args: Array<String>){
+
+    val kof = Kof("拳皇2002", 100)
+    println(kof.siteName)
+    println(kof.url)
+    println(kof.country)
+    kof.printTest()
+
 }
 
