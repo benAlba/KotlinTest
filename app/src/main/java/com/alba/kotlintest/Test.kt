@@ -110,7 +110,8 @@ class Person {
     println("no:${person.no}")
 }*/
 
-class Kof constructor(name: String){//类名为Kof,构造器没有注解，没有可见度修饰符，constructor关键字可省略
+//类和对象
+/*class Kof constructor(name: String){//类名为Kof,构造器没有注解，没有可见度修饰符，constructor关键字可省略
     var url: String = "http://www.kof.com"
     var country: String = "CN"
     var siteName = name
@@ -128,7 +129,6 @@ class Kof constructor(name: String){//类名为Kof,构造器没有注解，没�
         println("我是类的函数")
     }
 }
-
 fun main(args: Array<String>){
 
     val kof = Kof("拳皇2002", 100)
@@ -137,5 +137,89 @@ fun main(args: Array<String>){
     println(kof.country)
     kof.printTest()
 
+}*/
+
+
+interface Sport{
+    //接口的成员变量默认是open的
+
+    val time: Int
+
+    fun running(){
+        println("RUNNING")
+    }
+    fun swimming()
+    {
+        println("SWIMMING")
+    }
 }
 
+open class Person(name:String){  //父类用open关键字修饰
+
+    /**次级构造函数*/
+    constructor(name: String, age: Int):this(name){
+        //初始化
+        println("-------------基类次级构造函数-------------")
+    }
+
+    open fun study(){     //函数默认为final修饰,不能被子类重写。使用open关键字代表允许子类重写
+        println("我毕业了")
+    }
+
+    open fun running(){
+        println("running")
+    }
+}
+
+//子类有主构造函数，基类必须在主构造函数中立即初始化    可以用一个var属性重写一个val属性,反之不行
+class Man(name: String, age: Int ,override var time: Int) : Person(name,age) , Sport{
+
+    /*constructor(name: String, age: Int, override val time: Int):super(name,age){
+        println("-------------继承基类次级构造函数-------------")
+    }*/
+
+    init {
+        println("I will stand tall")
+    }
+
+    override fun running() {
+        //super<Sport>.running()
+        println("I like run too")
+    }
+
+}
+
+class Student : Person , Sport{
+    //属性重写使用override关键字,属性必须具有兼容类型，每一个声明的属性可以通过初始化程序或者getter方法重写
+    override val time: Int = 0
+
+    /**super关键字初始化基类，或者在代理另一个构造函数;初始化基类时，可以调用基类的不同构造方法*/
+    constructor(name: String, age: Int, no: String, score: Int):super(name,age){
+        println("------------继承基类次级构造函数------------")
+        println("学生名:${name}")
+        println("年龄:${age}")
+        println("学生号:${no}")
+        println("成绩:${score}")
+    }
+
+    override fun study() { //使用override关键字重写基类的方法
+        super.study()
+        println("我在读大学")
+    }
+
+    //如果有多个相同的方法(继承或者实现自其他类，如Person、Sport类)，则必须要重写该方法，可以使用super范型去选择性地调用父类的实现
+    override fun running(){
+        super<Sport>.running()
+        println("I like run")
+    }
+
+}
+
+fun main(args: Array<String>){
+    var s = Student("LuJunFeng",26,"1101",358)
+    s.study()
+    s.running()
+
+    var m = Man("LuYan",26,1800)
+    m.running()
+}
